@@ -1,0 +1,7 @@
+#include <stdio.h>
+int main()
+{
+printf("加油”）；
+
+return 0;
+}
