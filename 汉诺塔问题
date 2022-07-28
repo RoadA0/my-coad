@@ -1,0 +1,29 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+int count = 0;
+int _step(int n, int x , int y , int z )
+{
+		if (n == 1)
+	{
+		count++;
+		printf("%d#%c到%c\n", n, x, z);
+	}
+	if (n >= 2)
+	{		
+		_step(n-1, x, z, y);
+		count++;
+		printf("%d#%c到%c\n", n, x, z);
+		_step(n-1,y, x,z );
+	}
+	return count;
+}
+int main()
+{
+	int x=0, y=0, z=0, n=0;
+	printf("请输入盘子数：\n");
+	scanf("%d", &n);
+	int num = _step(n, 'A', 'B' , 'C');
+	printf("一共要%d 步", num);
+	return 0;
+}
+//领悟的还不是很透彻，以后再看看吧
