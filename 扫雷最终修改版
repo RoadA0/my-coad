@@ -1,0 +1,251 @@
+.h
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+#include<time.h>
+#include <windows.h>
+void game();
+#define ROW 9
+#define COL 9
+#define ROWS ROW+2
+#define COLS COL+2
+#define NUM 10
+void initboard(char Board[ROWS][COLS], int row,int  col, char set);
+void displayboard(char Board[ROWS][COLS], int row, int col);
+void Instal_mines(char Board[ROWS][COLS], int row, int col);
+int  clear_mines(char mines[ROWS][COLS], char show[ROWS][COLS], int row, int col,int* ret);
+void no_mines(char mines[ROWS][COLS], char show[ROWS][COLS], int x, int y, int row, int col);
+int remain_mines(char board[ROWS][COLS], int row, int col);
+
+test.c
+#include "mine clearance.h"
+void menu()
+{
+    printf("******************************\n");
+	printf("**开始游戏 1 *** 退出游戏 2 **\n");
+	printf("**********游戏说明 3 *********\n");
+}
+void start()
+{
+	int input = 0;
+	while (input != 2)
+	{
+		system("cls");
+		menu();
+
+scanf("%d", &input);
+		switch (input)
+		{
+		case 1:
+			game();
+			break;
+		case 2:
+			printf("退出游戏\n");
+			break;
+		case 3:
+			system("cls");
+			int in = 0;
+			printf("输入 1 加上两个坐标，将该位置标记为 # ，为你判定的炸弹。\n输入 0 加上坐标，翻开这个 * ，\n如果此位置是雷则游戏结束。\n");
+			printf("输入 4 返回菜单\n请输入：");
+			scanf("%d", &in);
+			while (1)
+			{
+				if (in == 4)
+				{
+					start();
+					break;
+				}
+				else
+					printf("输入错误\n");
+			}
+			break;
+		default:
+			printf("输入错误\n");
+			break;
+		}
+	}
+}
+int main()
+{
+  srand((unsigned int)time(NULL));
+	start();
+	//这个已经算是终极无敌版的扫雷了，
+	//如果说还有啥要改进的，那就是把地雷的数目减去被标记地雷的个数写上去，并且判定：如果标记的地雷个数等于地雷的总个数
+	//而且标记的都是对的话也可以判定为扫雷成功，不一定要全部点开，以后有空再改吧，现在已经很棒了。
+	return 0;
+}
+
+.c
+#include "mine clearance.h"
+void game()
+{
+	int ret = 0;
+	int count3 = 0;
+	printf("游戏开始\n");
+	char mine[ROWS][COLS] = { 0 };
+	char show[ROWS][COLS] = { 0 };
+	initboard(mine, ROWS, COLS, '0');
+	initboard(show, ROWS, COLS, '*');
+	Instal_mines(mine, ROW, COL);
+	displayboard(show, ROW, COL);	
+	//displayboard(mine, ROW, COL);
+	while (1)
+	{
+		clear_mines(mine, show, ROW, COL, &ret);
+		if (ret == '1')
+		{
+			displayboard(mine, ROW, COL);
+			break;
+		}
+		/*Sleep(1500);
+		system("cls");*/
+		displayboard(show, ROW, COL);
+		count3 = remain_mines(show,ROW,COL);
+		if (count3==ROW*COL-NUM)
+		{
+			printf("排雷成功\n");
+			displayboard(mine, ROW, COL);
+			printf("你可真的是一个小天才呀！\n");
+			printf("\n\n\n");
+			break;
+		}
+	}
+}
+void initboard(char Board[ROWS][COLS], int row, int  col, char set)
+{
+	for (int i = 0; i < row ; i++)
+	{
+		for (int j = 0; j < col; j++)
+			Board[i][j] = set;
+	}
+}
+void displayboard(char Board[ROWS][COLS], int row, int col)
+{
+	int j = 0;
+	for (j = 0; j <= col; j++)
+	{
+		printf(" %d ", j);
+	}
+	printf("\n");
+	for (j = 0; j <= col; j++)
+	{
+		if (j > 0)
+			printf("---");
+		else 
+		printf("   ");
+	}
+	printf("\n");
+	for (int i = 0; i < row; i++)
+	{
+		printf(" %d ", i+1);
+		printf("|");
+		for ( j = 0; j <col; j++)
+		{
+			printf(" %c ", Board[i+1][j+1]);
+		}
+		printf("\n");
+	}
+}
+void Instal_mines(char Board[ROWS][COLS], int row, int col)
+{
+	int x, y;
+	int i = 0;
+	int count = 0;
+	for (count= 0; count< NUM;)
+	{
+		x = rand() % row + 1;
+		y = rand() % col + 1;
+		if (Board[x][y] == '0')
+		{
+			Board[x][y] = '1';
+			count++;
+		}
+	}
+}
+int clear_mines(char mines[ROWS][COLS], char show[ROWS][COLS], int row, int col,int* ret)
+{
+	printf("请开始排查地雷：\n");
+	int x, y,m,i=0,j=0;
+	while (1)
+	{
+		scanf("%d%d%d",&m, &x, &y);
+		if (x <= row && x >= 1, y <= col && y >= 1,m==1||m==0)
+		{
+			switch (m)
+			{
+			case 1:
+				if (show[x][y] == '*')
+					show[x][y] ='#';
+				else if(show[x][y] == '#')
+					show[x][y] = '*';
+				break;
+			case 0:
+					if (show[x][y] == '*' || show[x][y] == '#')
+					{
+						if (mines[x][y] == '1')
+						{
+							printf("恭喜你被炸死了\n");
+							*ret = '1';
+							break;
+						}
+						else
+						{
+							 no_mines(mines, show, x, y,row,col);		
+							break;	
+						}
+					//定义这个为一个函数，以此展开递归
+				}
+				else
+					printf("该地方已经检查过了\n");
+				break;
+			}
+			break;
+		}
+		else
+			printf("输入错误坐标或者m的值\n");
+	}
+	return ret;
+}
+void no_mines(char mines[ROWS][COLS], char show[ROWS][COLS], int x, int y,int row, int col)
+{
+	int count1 = 0;
+	char count2;
+	for (int i = x - 1; i < x + 2; i++)
+	{
+		for (int j = y - 1; j < y + 2; j++)
+		{
+			count1 = count1 + (mines[i][j] - '0');
+		}
+	}
+	count2 = count1 + '0';
+	show[x][y] = count2;
+	if (count2 == '0')
+	{
+		for (int i = x - 1; i < x + 2; i++)
+		{
+			for (int j = y - 1; j < y + 2; j++)
+			{
+				if ((x != i || j != y) && show[i][j] != '0')
+				{
+					if (i <= row && i >= 1, j <= col && j >= 1)
+						no_mines(mines, show, i, j,row,col);
+				}
+			}
+		}
+	}
+}
+int remain_mines(char show[ROWS][COLS],int row,int col)
+{
+
+	int count3 = 0;
+	for (int i = 1; i <= row; i++)
+	{
+		for (int j = 1; j <= col; j++)
+		{
+			if (show[i][j] == '*' || show[i][j] == '#')
+				count3++;
+		}
+		}
+	return count3;
+}
+
+
