@@ -1,0 +1,114 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+void menu()
+{
+	printf("*********计算器************\n");
+	printf("***1 Add*********2 Sub*****\n");
+	printf("***3 Mul*********4 Div*****\n");
+	printf("******** 0 exit ***********\n");
+}
+int Add(int a, int b)
+{
+	return a + b;
+}
+int Sub(int a, int b)
+{
+
+	return a - b;
+}
+int Mul(int a, int b)
+{
+	return a*b;
+}
+int Div(int a, int b)
+{
+	return a / b;
+
+}
+void Calc(int(*p)(int, int),int a,int b)
+{
+
+	printf("%d\n",p(a, b));
+
+}
+int main()
+{
+	/*int a, b;
+	int input = 0;
+	do
+	{
+		menu();
+		printf("请选择： \n");
+		scanf("%d", &input);
+		if (input != 0)
+		{
+			printf("请输入两个操作数:\n");
+			scanf("%d%d", &a, &b);
+		}
+
+		switch (input)
+		{
+		case 1:
+			printf("%d\n", Add(a, b));
+			break;
+		case 2:
+			printf("%d\n", Sub(a, b));
+			break;
+		case 3:
+			printf("%d\n", Mul(a, b));
+			break;
+		case 4:
+			printf("%d\n", Div(a, b));
+			break;
+		case 0:
+			printf("已退出\n");
+			break;
+		default:
+			printf("输入错误\n");
+			break;
+
+		}
+	} while (input);*/
+	
+//只要合理，也没有很冗余！方案2 ：浅浅练习一下子回调函数。
+
+	int a, b;
+	int input = 0;
+	do
+	{
+		menu();
+		printf("请选择： \n");
+		scanf("%d", &input);
+		if (input != 0)
+		{
+			printf("请输入两个操作数:\n");
+			scanf("%d%d", &a, &b);
+		}
+
+		switch (input)
+		{
+		case 1:
+			Calc(Add, a, b);
+			break;
+		case 2:
+			Calc(Sub, a, b);
+			break;
+		case 3:
+			Calc(Mul, a, b);
+			break;
+		case 4:
+			Calc(Div,a,b );
+			break;
+		case 0:
+			printf("已退出\n");
+			break;
+		default:
+			printf("输入错误\n");
+			break;
+
+		}
+	} while (input);
+	
+//干的漂亮！
+	return 0;
+}
