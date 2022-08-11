@@ -1,0 +1,157 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<math.h>
+//int Exchange(int tmp)
+//{
+//	int ret;
+//	ret = tmp / 2;
+//
+//	return ret;
+//
+//}
+int Cmp(int arr[],int sz)
+{
+	int i, j,ret=0;
+	for (i = sz-1; i >=0; i--)
+	{
+		if (arr[i] % 2 != 0)
+		{
+			for (j = 0; j < i; j++)
+			{
+				if (arr[j] % 2 == 0)
+				{
+					ret = 1;
+					break;
+				}
+			}
+			break;
+		}
+		
+	}
+	return ret;
+}
+int main()
+{
+	//int n = 1;
+	//int i = 0;
+	//
+	//for (i = 0; i < 10000; i++)
+	//{//计算i的位数
+	//	int tmp=i;
+	//	n = 1;
+	//	while (tmp/=10)
+	//	{
+	//		n++;
+	//		
+	//	}
+	//	//计算每一位数n次方的和
+	//	tmp = i;
+	//	int sum = 0;
+	//	while (tmp)
+
+	//	{
+	//		sum += pow(tmp % 10, n);
+	//		tmp /= 10;
+	//	}
+	//		
+	//
+
+	//	if (i == sum)
+
+	//		printf("%d ", i);
+
+
+
+	//}
+	//打印一个菱形
+	//先打印上半部分
+//	int i;
+//	int line;
+//	int j;
+//	scanf("%d", &line);
+//	for (i = 0; i < line; i++)
+//	{//打印空格
+//
+//		for (j = 0; j < line-i; j++)
+//		{
+//			printf(" ");
+//		}
+//		//打印*
+//		for (j = 0; j < 2*i+1; j++)
+//		{
+//			printf("*");
+//
+//		}
+//		printf("\n");
+//	}
+//	//打印下半部分
+//	for (i = 0; i < line - 1; i++)
+//	{
+////打印空格
+//		for (j = 0; j < i + 2; j++)
+//		{
+//			printf(" ");
+//		}
+//		//打印*
+//		for (j = 0; j < 2 * (line - 2 - i) + 1; j++)
+//		{
+//			printf("*");
+//		}
+//		printf("\n");
+//	}
+
+
+	//喝汽水问题
+	/*int money = 20;
+	int price = 1;
+	int total = money / price;
+	int tmp = total;
+	while (tmp > 1)
+	{
+		total += Exchange(tmp);
+		tmp = tmp / 2 + tmp % 2;
+	}
+	printf("%d ", total);*/
+
+
+
+	//把一个数组里面的奇数全部放在数组的前半部分；
+	int arr[] = { 1,2,3,4,5,6,7,8,9,10,11,12};
+	int sz = sizeof(arr) / sizeof(arr[0]);
+	int i;
+	int j;
+	int ret = 1;
+	int n = 0;
+	while (ret != 0)
+	{
+		
+		for (i = 0; i < sz; i++)
+		{
+			int sub = sz;
+			if (arr[i] % 2 != 0)
+			{
+				for (j = 0; j < sz; j++)
+				{
+					if (arr[j] % 2 == 0 && i>j &&sub>i - j)
+					{
+						sub = i - j;
+					}
+				}
+				if (sub != sz)
+				{
+					int tmp;
+					tmp = arr[i];
+					arr[i] = arr[i - sub];
+					arr[i - sub] = tmp;
+				}
+			}
+		}
+		
+		n++;
+		ret = Cmp(arr, sz);//重复定义int 会样，莫名奇妙的加1；就离谱  TNND  操操草！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+	} 
+	for (i = 0; i < sz;i++)
+	printf("%d ", arr[i]);
+		return 0;
+}
+
