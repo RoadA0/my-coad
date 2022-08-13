@@ -1,0 +1,72 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<string.h>
+#include<assert.h>
+char*my_strstr(const char*arr1,const  char*arr2)
+{
+	char*start = arr1;
+	char*arr22 = arr2;
+	assert(arr1);
+	assert(arr2);
+	if (arr2 == "")
+		return arr1;
+	if (arr1 == "")
+		return NULL;
+	while (*arr1&&*arr2)
+	{
+		if (*arr1 == *arr2)
+		{
+			arr1++;
+			arr2++;
+		}
+		else
+		{
+			start++;
+			arr1 = start;
+			arr2 = arr22;
+
+		}
+	}
+	if (*arr2 == '\0')
+		return start;
+	if (*arr1 =='\0')
+		return NULL;
+}
+void my_memcpy( void*arr3, const void*arr4,  size_t  num)
+{
+	int i = 0;
+	for (i = 0; i < num; i++)
+	{
+		*(char*)arr3 = *(char*)arr4;
+		++(char*)arr3;
+		++(char*)arr4;
+	}
+
+}
+int main()
+{
+//my_strstr 寻找字串
+	char arr1[30] = "abbcdefggh";
+	char arr2[30] = "bcde";
+	char*ret = my_strstr(arr1, arr2);
+	if (ret == NULL)
+		printf("找不到\n");
+	else
+		printf("找到了 %s \n", ret);
+//my_memcpy非重叠内存复制
+	int arr3[] = { 1, 2, 3, 4, 5, 6, 7 };
+	int arr4[] = { 11, 12, 13, 14, 15, 16, 17 };
+	int num = 0;
+	scanf("%d", &num);
+	my_memcpy(arr3, arr4,num*sizeof(arr3[0]));
+	int i = 0;
+	int sz = sizeof(arr3) / sizeof(arr3[0]);
+	for (i = 0; i < sz;i++)
+	printf("%d ", arr3[i]);
+//my_memmove重叠内存复制
+
+
+	return 0;
+}
+
+
