@@ -1,0 +1,12 @@
+
+int main()
+{
+	initgraph(500, 485,1);
+	IMAGE img;
+	loadimage(&img, ".//sucai//3.jpg");
+	putimage(0, 0, &img);
+	
+	getchar();
+	return 0;
+}
+
